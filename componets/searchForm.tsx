@@ -1,15 +1,15 @@
-import React from 'react'
+'use client';
 
-export default async function SearchForm() {
+import React from 'react';
+import { search } from '@/app/actions';
 
-  async function search(formData:FormData) {
-    "use server"
-  }
+export default function SearchForm({ className }: { className?: string }) {
   return (
-    <> 
-     <form action={search}></form>
-    <input type="search" name="search" id="search" />
-    <button type="submit">search</button></>
-  )
+    <div className={className}>
+      <form action={search} className="flex gap-2">
+        <input className="border-2" type="search" name="search" id="search" />
+        <button type="submit" className="btn-red-100">search</button>
+      </form>
+    </div>
+  );
 }
-
