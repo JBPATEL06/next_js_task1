@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { fetchData } from '@/hooks/fetchData';
+import React from 'react';
 import UserData from './userData';
 
-type User = {
+export type User = {
   _id: string;
   username: string;
   email: string;
@@ -12,24 +11,22 @@ type User = {
   userProfile?: string;
 };
 
-export default function ProfileTab() {
-  const [users, setUsers] = useState<User[]>([]);
+type ProfileTabProps = {
+  users: User[];
+  onUserUpdated?: () => void;
+};
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const data = await fetchData();
-        setUsers(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getUser();
-  }, []);
+export default function ProfileTab({ users, onUserUpdated }: ProfileTabProps) {
+  if (!users || users.length === 0) {
+    return (
+      <div className="text-center text-gray-500 py-10 bg-white border border-gray-200 rounded-xl">
+        No users found.
+      </div>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {users.map((userData) => (
         <UserData
           key={userData._id}
@@ -37,6 +34,7 @@ export default function ProfileTab() {
           email={userData.email}
           phoneNumber={userData.phone}
           image={userData.userProfile}
+          onUserUpdated={onUserUpdated}
         />
       ))}
     </div>
